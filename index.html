@@ -1,131 +1,125 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ thống Đăng ký / Quản lý</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: bold;
-        }
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #0070f3;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        button:hover {
-            background-color: #0051bb;
-        }
-        #status {
-            margin-top: 15px;
-            text-align: center;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
+  <title>Đăng ký học sinh ở lại cuối tuần</title>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8fafc;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+    h2 { text-align: center; color: #0f172a; margin-bottom: 20px; font-size: 20px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; color: #334155; }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #059669;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #047857; }
+    #status { margin-top: 15px; text-align: center; font-weight: bold; font-size: 14px; }
+  </style>
 </head>
+
 <body>
+  <div class="container">
+    <h2>ĐĂNG KÝ HỌC SINH Ở LẠI CUỐI TUẦN</h2>
+    
+    <form id="dangKyForm">
+      <div class="form-group">
+        <label for="hoTen">Họ và tên học sinh:</label>
+        <input type="text" id="hoTen" required placeholder="Nhập họ và tên...">
+      </div>
 
-    <div class="container">
-        <h2>Ứng dụng Đăng ký</h2>
-        <form id="appForm">
-            <div class="form-group">
-                <label for="hoTen">Họ và tên:</label>
-                <input type="text" id="hoTen" name="hoTen" required placeholder="Nhập họ và tên của bạn">
-            </div>
-            
-            <div class="form-group">
-                <label for="noiDung">Nội dung / Ghi chú:</label>
-                <textarea id="noiDung" name="noiDung" rows="3" placeholder="Nhập nội dung..."></textarea>
-            </div>
+      <div class="form-group">
+        <label for="lop">Lớp:</label>
+        <input type="text" id="lop" required placeholder="Ví dụ: 8A...">
+      </div>
 
-            <button type="submit" id="submitBtn">Gửi dữ liệu</button>
-        </form>
-        <div id="status"></div>
-    </div>
+      <div class="form-group">
+        <label for="lyDo">Lý do ở lại / Ghi chú:</label>
+        <textarea id="lyDo" rows="3" placeholder="Nhập lý do..."></textarea>
+      </div>
 
-    <script>
-        document.getElementById('appForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const statusDiv = document.getElementById('status');
-            
-            // Lấy dữ liệu từ form
-            const hoTen = document.getElementById('hoTen').value;
-            const noiDung = document.getElementById('noiDung').value;
+      <button type="submit" id="submitBtn">Gửi đăng ký</button>
+    </form>
 
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Đang gửi...';
-            statusDiv.style.color = '#555';
-            statusDiv.textContent = 'Đang kết nối tới máy chủ...';
+    <div id="status"></div>
+  </div>
 
-            try {
-                // Gửi dữ liệu thông qua Serverless Function proxy của Vercel
-                const response = await fetch('/api/proxy', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ hoTen: hoTen, noiDung: noiDung })
-                });
+  <script>
+    const form = document.getElementById('dangKyForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusDiv = document.getElementById('status');
 
-                const result = await response.json();
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const hoTen = document.getElementById('hoTen').value;
+      const lop = document.getElementById('lop').value;
+      const lyDo = document.getElementById('lyDo').value;
 
-                if (response.ok) {
-                    statusDiv.style.color = 'green';
-                    statusDiv.textContent = 'Gửi dữ liệu thành công!';
-                    document.getElementById('appForm').reset();
-                } else {
-                    throw new Error(result.error || 'Có lỗi xảy ra từ máy chủ.');
-                }
-            } catch (error) {
-                statusDiv.style.color = 'red';
-                statusDiv.textContent = 'Lỗi: ' + error.message;
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Gửi dữ liệu';
-            }
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Đang gửi dữ liệu...';
+      statusDiv.style.color = '#334155';
+      statusDiv.textContent = 'Đang kết nối đến hệ thống quản lý...';
+
+      try {
+        // Gửi qua Serverless Function proxy của Vercel (đã giấu link Apps Script tuyệt đối)
+        const response = await fetch('/api/proxy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ hoTen, lop, lyDo })
         });
-    </script>
+
+        const result = await response.json();
+
+        if (response.ok) {
+          statusDiv.style.color = '#059669';
+          statusDiv.textContent = 'Đăng ký thành công!';
+          form.reset();
+        } else {
+          throw new Error(result.error || 'Lỗi lưu dữ liệu.');
+        }
+      } catch (error) {
+        statusDiv.style.color = '#dc2626';
+        statusDiv.textContent = 'Có lỗi xảy ra: ' + error.message;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Gửi đăng ký';
+      }
+    });
+  </script>
 </body>
 </html>
