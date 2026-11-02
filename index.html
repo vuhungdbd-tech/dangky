@@ -1,0 +1,12 @@
+// Ví dụ khi người dùng bấm nút gửi form:
+const response = await fetch('/api/proxy', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        hoTen: "Nguyễn Văn A",
+        noiDung: "Đăng ký tham gia"
+    })
+});
+
+const result = await response.json();
+console.log("Kết quả từ Google Sheets:", result);
