@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   // Thay thế URL Web App Google Apps Script của bạn vào đây
-  const GOOGLE_SCRIPT_URL = "hhttps://script.google.com/a/~/macros/s/AKfycbySDB5Mn_KgRhwnHf5yJgfrqzKgE5gGOE49f4sZMvgCJEA7mkrZawTTe-Ac006sDpO3/exec";
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/a/~/macros/s/AKfycbxJKSyiCZ_d1cog_Tm5VOpzz-fmfT6NcSKcqkUFUVoTKiWsTf_5Uqng_Mpg972swG4F/exec";
 
   if (req.method === 'POST') {
     try {
